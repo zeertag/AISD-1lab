@@ -7,6 +7,8 @@
 
 using namespace std;
 
+ofstream rnd, d_9_1, d_bck, srtd;
+
 int l_gaps = 0;
 int up_limit = 10000000;
 int down_limit = -1000000;
@@ -91,13 +93,13 @@ int lens[L_N]{ 10000, 20000, 30000, 40000, 50000, 60000, 70000, 80000, 90000, 10
 int main()
 {
     srand(time(NULL));
-    ofstream rnd, d_9_1, d_bck;
     int l_tst = 0;
 
-    for (int h = 0; h < 10; h++)
+    for (int h = 1; h < 10; h++)
     {
+
         cout << h << endl;
-        if (h < 4 || h == 5)
+        if (h < 4 || h == 5 || h == 8 || h == 9)
             l_tst = 10;
 
         else
@@ -109,46 +111,55 @@ int main()
             rnd.open("Test_data\\insertion_sort\\random1.txt");
             d_9_1.open("Test_data\\insertion_sort\\90_10 1.txt");
             d_bck.open("Test_data\\insertion_sort\\back1.txt");
+            srtd.open("Test_data\\insertion_sort\\sorted1.txt");
             break;
         case 2:
             rnd.open("Test_data\\selection_sort\\random2.txt");
             d_9_1.open("Test_data\\selection_sort\\90_10 2.txt");
             d_bck.open("Test_data\\selection_sort\\back2.txt");
+            srtd.open("Test_data\\selection_sort\\sorted2.txt");
             break;
         case 3:
             rnd.open("Test_data\\bubble_sort\\random3.txt");
             d_9_1.open("Test_data\\bubble_sort\\90_10 3.txt");
             d_bck.open("Test_data\\bubble_sort\\back3.txt");
+            srtd.open("Test_data\\bubble_sort\\sorted3.txt");
             break;
         case 4:
             rnd.open("Test_data\\merge_sort\\random4.txt");
             d_9_1.open("Test_data\\merge_sort\\90_10 4.txt");
             d_bck.open("Test_data\\merge_sort\\back4.txt");
+            srtd.open("Test_data\\merge_sort\\sorted4.txt");
             break;
         case 5:
             rnd.open("Test_data\\shell_shell_sort\\random5.txt");
             d_9_1.open("Test_data\\shell_shell_sort\\90_10 5.txt");
             d_bck.open("Test_data\\shell_shell_sort\\back5.txt");
+            srtd.open("Test_data\\shell_shell_sort\\sorted5.txt");
             break;
         case 6:
             rnd.open("Test_data\\quick_sort\\random6.txt");
             d_9_1.open("Test_data\\quick_sort\\90_10 6.txt");
             d_bck.open("Test_data\\quick_sort\\back6.txt");
+            srtd.open("Test_data\\quick_sort\\sorted6.txt");
             break;
         case 7:
             rnd.open("Test_data\\heap_sort\\random7.txt");
             d_9_1.open("Test_data\\heap_sort\\90_10 7.txt");
             d_bck.open("Test_data\\heap_sort\\back7.txt");
+            srtd.open("Test_data\\heap_sort\\sorted7.txt");
             break;
         case 8:
             rnd.open("Test_data\\shell_hibbard_sort\\random8.txt");
             d_9_1.open("Test_data\\shell_hibbard_sort\\90_10 8.txt");
             d_bck.open("Test_data\\shell_hibbard_sort\\back8.txt");
+            srtd.open("Test_data\\shell_hibbard_sort\\sorted8.txt");
             break;
         case 9:
             rnd.open("Test_data\\shell_pratt_sort\\random9.txt");
             d_9_1.open("Test_data\\shell_pratt_sort\\90_10 9.txt");
             d_bck.open("Test_data\\shell_pratt_sort\\back9.txt");
+            srtd.open("Test_data\\shell_pratt_sort\\sorted9.txt");
             break;
         }
 
@@ -264,6 +275,8 @@ int main()
             delete[] gaps;
         }
 
+        rnd.close();
+
         switch (h)
         {
         case 1:
@@ -374,6 +387,8 @@ int main()
             delete[] numbers_back;
             delete[] gaps;
         }
+
+        d_bck.close();
 
         switch (h)
         {
@@ -495,8 +510,120 @@ int main()
             delete[] gaps;
         }
 
-        rnd.close();
         d_9_1.close();
-        d_bck.close();
+
+        switch (h)
+        {
+        case 1:
+            srtd << "Test for Selection Sort for sorted\n";
+            break;
+        case 2:
+            srtd << "Test for Insertion Sort for sorted\n";
+            break;
+        case 3:
+            srtd << "Test for Bubble Sort for sorted\n";
+            break;
+        case 4:
+            srtd << "Test for Merge Sort for sorted\n";
+            break;
+        case 5:
+            srtd << "Test for Shell Sort (shell gaps) for sorted\n";
+            break;
+        case 6:
+            srtd << "Test for Quick Sort for sorted\n";
+            break;
+        case 7:
+            srtd << "Test for Heap Sort for sorted\n";
+            break;
+        case 8:
+            srtd << "Test for Shell Sort (hibbard gaps) for sorted\n";
+            break;
+        case 9:
+            srtd << "Test for Shell Sort (pratt gaps) for sorted\n";
+            break;
+        }
+
+        for (int i = 0; i < l_tst; i++)
+        {
+            srtd << "\nArray length is " << lens[i] << endl;
+
+            int N = lens[i];
+            Sorts s(N);
+
+            int* numbers_sorted = new int[N] {};
+            int* gaps = new int[N] {};
+
+
+            for (int k = 0; k < 10; k++)
+            {
+                for (int g = 0; g < N; g++)
+                {
+                    numbers_sorted[g] = g;
+                }
+
+                auto start = chrono::steady_clock::now();
+                auto end = chrono::steady_clock::now();
+                auto t = chrono::duration_cast<chrono::milliseconds>(end - start);
+
+                switch (h)
+                {
+                case 1:
+                    start = chrono::steady_clock::now();
+                    numbers_sorted = s.selection_sort(numbers_sorted);
+                    end = chrono::steady_clock::now();
+                    break;
+                case 2:
+                    start = chrono::steady_clock::now();
+                    numbers_sorted = s.insertion_sort(numbers_sorted);
+                    end = chrono::steady_clock::now();
+                    break;
+                case 3:
+                    start = chrono::steady_clock::now();
+                    numbers_sorted = s.bubble_sort(numbers_sorted);
+                    end = chrono::steady_clock::now();
+                    break;
+                case 4:
+                    start = chrono::steady_clock::now();
+                    numbers_sorted = s.merge_sort(numbers_sorted, N);
+                    end = chrono::steady_clock::now();
+                    break;
+                case 5:
+                    gaps = shell_gaps(gaps, N);
+                    start = chrono::steady_clock::now();
+                    numbers_sorted = s.shell_sort(numbers_sorted, gaps, l_gaps);
+                    end = chrono::steady_clock::now();
+                case 6:
+                    start = chrono::steady_clock::now();
+                    numbers_sorted = s.quick_sort(numbers_sorted, N);
+                    end = chrono::steady_clock::now();
+                    break;
+                case 7:
+                    start = chrono::steady_clock::now();
+                    numbers_sorted = s.heap_sort(numbers_sorted);
+                    end = chrono::steady_clock::now();
+                    break;
+                case 8:
+                    gaps = hibbard_gaps(gaps, N);
+                    start = chrono::steady_clock::now();
+                    numbers_sorted = s.shell_sort(numbers_sorted, gaps, l_gaps);
+                    end = chrono::steady_clock::now();
+                    break;
+                case 9:
+                    gaps = pratt_gaps(gaps, N);
+                    Sorts g(l_gaps);
+                    gaps = g.heap_sort(gaps);
+                    start = chrono::steady_clock::now();
+                    numbers_sorted = s.shell_sort(numbers_sorted, gaps, l_gaps);
+                    end = chrono::steady_clock::now();
+                    break;
+                }
+                t = chrono::duration_cast<chrono::milliseconds>(end - start);
+                srtd << t.count() / 1000 << "." << t.count() % 1000 << endl;
+            }
+
+            delete[] numbers_sorted;
+            delete[] gaps;
+        }
+        srtd.close();
     }
 }

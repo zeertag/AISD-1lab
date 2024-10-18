@@ -161,8 +161,8 @@ int* Sorts::quick_sort(int* numbers, int size)
             m_arr[m_len++] = numbers[i];
     }
 
-    int* sorted_left = quick_sort_back(l_arr, l_len);
-    int* sorted_right = quick_sort_back(r_arr, r_len);
+    int* sorted_left = quick_sort(l_arr, l_len);
+    int* sorted_right = quick_sort(r_arr, r_len);
 
     int* result = new int[size];
     copy(sorted_left, sorted_left + l_len, result);
