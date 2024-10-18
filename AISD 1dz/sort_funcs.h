@@ -9,10 +9,16 @@ using namespace std;
 class Sorts
 {
 	int N;
-	int up_limit, down_limit;
 public:
-	void set_params(int size, int top, int down);
-	void generate();
+	Sorts(int N);
 	void print(int* numbers);
+	int* selection_sort(int* numbers);
+	int* insertion_sort(int* numbers);
+	int* bubble_sort(int* numbers);
+	int* merge_sort(int* numbers, int size);
+	int* shell_sort(int* numbers, int* gaps, int l_gaps);
+	int* quick_sort(int* numbers, int size);
+	int* quick_sort_back(int* numbers, int size);
+	int* heap_sort(int* numbers);
 
 };
