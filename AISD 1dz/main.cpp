@@ -1,5 +1,4 @@
 ﻿#include <iostream>
-#include <locale>
 #include <ctime>
 #include <chrono>
 #include <iomanip>
@@ -89,16 +88,13 @@ int lens[L_N]{ 10000, 20000, 30000, 40000, 50000, 60000, 70000, 80000, 90000, 10
                        300000, 400000, 500000, 600000, 700000, 800000, 900000, 1000000 };
 
 
-//const int L_N = 1;
-//int lens[L_N]{ 10};
-
 int main()
 {
     srand(time(NULL));
     ofstream rnd, d_9_1, d_bck;
     int l_tst = 0;
 
-    for (int h = 6; h < 10; h++)
+    for (int h = 0; h < 10; h++)
     {
         cout << h << endl;
         if (h < 4 || h == 5)
@@ -303,8 +299,7 @@ int main()
         {
             d_bck << "\nArray length is " << lens[i] << endl;
 
-            int N = lens[i]; 
-            cout << N << endl;
+            int N = lens[i];
             Sorts s(N); 
 
             int* numbers_back = new int[N] {};
