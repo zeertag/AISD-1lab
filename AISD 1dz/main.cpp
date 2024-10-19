@@ -85,9 +85,8 @@ int* pratt_gaps(int* gaps, int N)
     return gaps;
 }
 
-const int L_N = 19;
-int lens[L_N]{ 10000, 20000, 30000, 40000, 50000, 60000, 70000, 80000, 90000, 100000, 200000,
-                       300000, 400000, 500000, 600000, 700000, 800000, 900000, 1000000 };
+const int L_N = 20;
+int lens[L_N]{ 10000, 20000, 30000, 40000, 50000, 60000, 70000, 80000, 90000, 100000, 150000, 200000, 300000, 400000, 500000, 600000, 700000, 800000, 900000, 1000000 };
 
 
 int main()
@@ -95,13 +94,14 @@ int main()
     srand(time(NULL));
     int l_tst = 0;
 
-    for (int h = 1; h < 10; h++)
+    for (int h = 7; h < 10; h++)
     {
 
         cout << h << endl;
-        if (h < 4 || h == 5 || h == 8 || h == 9)
-            l_tst = 10;
-
+        if (h == 6)
+            l_tst = 0;
+        else if (h < 4 || h == 5 || h > 7)
+            l_tst = 12;
         else
             l_tst = L_N;
 
@@ -166,10 +166,10 @@ int main()
         switch (h)
         {
         case 1:
-            rnd << "Test for Selection Sort random\n";
+            rnd << "Test for Insertion Sort random\n";
             break;
         case 2:
-            rnd << "Test for Insertion Sort random\n";
+            rnd << "Test for Selection Sort random\n";
             break;
         case 3:
             rnd << "Test for Bubble Sort random\n";
@@ -204,25 +204,25 @@ int main()
             int* numbers = new int[N] {};
             int* gaps = new int[N] {};
 
+            long long total_time = 0;
+
             for (int k = 0; k < 10; k++)
             {
                 numbers = generate(numbers, N, up_limit, down_limit);
 
                 auto start = chrono::steady_clock::now();
                 auto end = chrono::steady_clock::now();
-                auto t = chrono::duration_cast<chrono::milliseconds>(end - start);
-
 
                 switch (h)
                 {
                 case 1:
                     start = chrono::steady_clock::now();
-                    numbers = s.selection_sort(numbers);
+                    numbers = s.insertion_sort(numbers);
                     end = chrono::steady_clock::now();
                     break;
                 case 2:
                     start = chrono::steady_clock::now();
-                    numbers = s.insertion_sort(numbers);
+                    numbers = s.selection_sort(numbers);
                     end = chrono::steady_clock::now();
                     break;
                 case 3:
@@ -238,7 +238,7 @@ int main()
                 case 5:
                     gaps = shell_gaps(gaps, N);
                     start = chrono::steady_clock::now();
-                    numbers = s.shell_sort(numbers,gaps,l_gaps);
+                    numbers = s.shell_sort(numbers, gaps, l_gaps);
                     end = chrono::steady_clock::now();
                     break;
                 case 6:
@@ -267,9 +267,13 @@ int main()
                     break;
                 }
 
-                t = chrono::duration_cast<chrono::milliseconds>(end - start);
-                rnd << t.count() / 1000 << "." << t.count() % 1000 << endl;
+                auto t = chrono::duration_cast<chrono::milliseconds>(end - start).count();
+                total_time += t;
             }
+
+            double average_time = total_time / 10.0 / 1000.0;
+            rnd << fixed << setprecision(3);
+            rnd << average_time << endl;
 
             delete[] numbers;
             delete[] gaps;
@@ -280,10 +284,10 @@ int main()
         switch (h)
         {
         case 1:
-            d_bck << "Test for Selection Sort back\n";
+            d_bck << "Test for Insertion Sort back\n";
             break;
         case 2:
-            d_bck << "Test for Insertion Sort back\n";
+            d_bck << "Test for Selection Sort back\n";
             break;
         case 3:
             d_bck << "Test for Bubble Sort back\n";
@@ -313,10 +317,12 @@ int main()
             d_bck << "\nArray length is " << lens[i] << endl;
 
             int N = lens[i];
-            Sorts s(N); 
+            Sorts s(N);
 
             int* numbers_back = new int[N] {};
             int* gaps = new int[N] {};
+
+            long long total_time = 0;
 
             for (int k = 0; k < 10; k++)
             {
@@ -325,18 +331,17 @@ int main()
 
                 auto start = chrono::steady_clock::now();
                 auto end = chrono::steady_clock::now();
-                auto t = chrono::duration_cast<chrono::milliseconds>(end - start);
 
                 switch (h)
                 {
                 case 1:
                     start = chrono::steady_clock::now();
-                    numbers_back = s.selection_sort(numbers_back);
+                    numbers_back = s.insertion_sort(numbers_back);
                     end = chrono::steady_clock::now();
                     break;
                 case 2:
                     start = chrono::steady_clock::now();
-                    numbers_back = s.insertion_sort(numbers_back);
+                    numbers_back = s.selection_sort(numbers_back);
                     end = chrono::steady_clock::now();
                     break;
                 case 3:
@@ -350,7 +355,7 @@ int main()
                     end = chrono::steady_clock::now();
                     break;
                 case 5:
-                    gaps = shell_gaps(gaps, N);
+                    gaps = shell_gaps(gaps, N);;
                     start = chrono::steady_clock::now();
                     numbers_back = s.shell_sort(numbers_back, gaps, l_gaps);
                     end = chrono::steady_clock::now();
@@ -380,9 +385,14 @@ int main()
                     end = chrono::steady_clock::now();
                     break;
                 }
-                t = chrono::duration_cast<chrono::milliseconds>(end - start);
-                d_bck << t.count() / 1000 << "." << t.count() % 1000 << endl;
+
+                auto t = chrono::duration_cast<chrono::milliseconds>(end - start).count();
+                total_time += t;
             }
+
+            double average_time = total_time / 10.0 / 1000.0;
+            d_bck << fixed << setprecision(3);
+            d_bck << average_time << endl;
 
             delete[] numbers_back;
             delete[] gaps;
@@ -393,10 +403,10 @@ int main()
         switch (h)
         {
         case 1:
-            d_9_1 << "Test for Selection Sort 90_10\n";
+            d_9_1 << "Test for Insertion Sort 90_10\n";
             break;
         case 2:
-            d_9_1 << "Test for Insertion Sort 90_10\n";
+            d_9_1 << "Test for Selection Sort 90_10\n";
             break;
         case 3:
             d_9_1 << "Test for Bubble Sort 90_10\n";
@@ -425,15 +435,16 @@ int main()
         {
             d_9_1 << "\nArray length is " << lens[i] << endl;
 
-            int N = lens[i]; 
-            Sorts s(N); 
+            int N = lens[i];
+            Sorts s(N);
 
             int size_90_10 = N * 0.9;
             int size_10 = N - size_90_10;
             int* numbers_90_10 = new int[N] {};
-            int* help_90_10 = new int[size_90_10] {};    
+            int* help_90_10 = new int[size_90_10] {};
             int* gaps = new int[N] {};
 
+            long long total_time = 0;
 
             for (int k = 0; k < 10; k++)
             {
@@ -447,18 +458,17 @@ int main()
 
                 auto start = chrono::steady_clock::now();
                 auto end = chrono::steady_clock::now();
-                auto t = chrono::duration_cast<chrono::milliseconds>(end - start);
 
                 switch (h)
                 {
                 case 1:
                     start = chrono::steady_clock::now();
-                    numbers_90_10 = s.selection_sort(numbers_90_10);
+                    numbers_90_10 = s.insertion_sort(numbers_90_10);
                     end = chrono::steady_clock::now();
                     break;
                 case 2:
                     start = chrono::steady_clock::now();
-                    numbers_90_10 = s.insertion_sort(numbers_90_10);
+                    numbers_90_10 = s.selection_sort(numbers_90_10);
                     end = chrono::steady_clock::now();
                     break;
                 case 3:
@@ -501,9 +511,14 @@ int main()
                     end = chrono::steady_clock::now();
                     break;
                 }
-                t = chrono::duration_cast<chrono::milliseconds>(end - start);
-                d_9_1 << t.count() / 1000 << "." << t.count() % 1000 << endl;
+
+                auto t = chrono::duration_cast<chrono::milliseconds>(end - start).count();
+                total_time += t;
             }
+
+            double average_time = total_time / 10.0 / 1000.0;
+            d_9_1 << fixed << setprecision(3);
+            d_9_1 << average_time << endl;
 
             delete[] numbers_90_10;
             delete[] help_90_10;
@@ -515,10 +530,10 @@ int main()
         switch (h)
         {
         case 1:
-            srtd << "Test for Selection Sort for sorted\n";
+            srtd << "Test for Insertion Sort for sorted\n";
             break;
         case 2:
-            srtd << "Test for Insertion Sort for sorted\n";
+            srtd << "Test for Selection Sort for sorted\n";
             break;
         case 3:
             srtd << "Test for Bubble Sort for sorted\n";
@@ -553,28 +568,27 @@ int main()
             int* numbers_sorted = new int[N] {};
             int* gaps = new int[N] {};
 
+            long long total_time = 0;
 
             for (int k = 0; k < 10; k++)
             {
-                for (int g = 0; g < N; g++)
-                {
-                    numbers_sorted[g] = g;
-                }
+
+                numbers_sorted = generate(numbers_sorted, N, up_limit, down_limit);
+                numbers_sorted = s.heap_sort(numbers_sorted);
 
                 auto start = chrono::steady_clock::now();
                 auto end = chrono::steady_clock::now();
-                auto t = chrono::duration_cast<chrono::milliseconds>(end - start);
 
                 switch (h)
                 {
                 case 1:
                     start = chrono::steady_clock::now();
-                    numbers_sorted = s.selection_sort(numbers_sorted);
+                    numbers_sorted = s.insertion_sort(numbers_sorted);
                     end = chrono::steady_clock::now();
                     break;
                 case 2:
                     start = chrono::steady_clock::now();
-                    numbers_sorted = s.insertion_sort(numbers_sorted);
+                    numbers_sorted = s.selection_sort(numbers_sorted);
                     end = chrono::steady_clock::now();
                     break;
                 case 3:
@@ -592,6 +606,7 @@ int main()
                     start = chrono::steady_clock::now();
                     numbers_sorted = s.shell_sort(numbers_sorted, gaps, l_gaps);
                     end = chrono::steady_clock::now();
+                    break;
                 case 6:
                     start = chrono::steady_clock::now();
                     numbers_sorted = s.quick_sort(numbers_sorted, N);
@@ -603,7 +618,7 @@ int main()
                     end = chrono::steady_clock::now();
                     break;
                 case 8:
-                    gaps = hibbard_gaps(gaps, N);
+                    gaps = hibbard_gaps(gaps, N);;
                     start = chrono::steady_clock::now();
                     numbers_sorted = s.shell_sort(numbers_sorted, gaps, l_gaps);
                     end = chrono::steady_clock::now();
@@ -612,18 +627,23 @@ int main()
                     gaps = pratt_gaps(gaps, N);
                     Sorts g(l_gaps);
                     gaps = g.heap_sort(gaps);
-                    start = chrono::steady_clock::now();
+                    start = chrono::steady_clock::now(); 
                     numbers_sorted = s.shell_sort(numbers_sorted, gaps, l_gaps);
                     end = chrono::steady_clock::now();
                     break;
                 }
-                t = chrono::duration_cast<chrono::milliseconds>(end - start);
-                srtd << t.count() / 1000 << "." << t.count() % 1000 << endl;
+
+                auto t = chrono::duration_cast<chrono::milliseconds>(end - start).count();
+                total_time += t;
             }
+            double average_time = total_time / 10.0 / 1000.0;
+            srtd << fixed << setprecision(3);
+            srtd << average_time << endl;
 
             delete[] numbers_sorted;
             delete[] gaps;
         }
+
         srtd.close();
     }
 }
