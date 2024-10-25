@@ -35,9 +35,3 @@ Array length is 150000
 
 Array length is 200000
 2.280
-
-Array length is 250000
-3.573
-
-Array length is 300000
-5.130

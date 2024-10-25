@@ -10,7 +10,7 @@ Array length is 30000
 0.005
 
 Array length is 40000
-0.006
+0.007
 
 Array length is 50000
 0.008
@@ -31,31 +31,34 @@ Array length is 100000
 0.018
 
 Array length is 150000
-0.028
+0.029
 
 Array length is 200000
 0.039
 
+Array length is 250000
+0.050
+
 Array length is 300000
-0.060
+0.061
 
 Array length is 400000
-0.082
+0.084
 
 Array length is 500000
-0.104
+0.105
 
 Array length is 600000
-0.126
+0.129
 
 Array length is 700000
-0.149
+0.151
 
 Array length is 800000
-0.172
+0.175
 
 Array length is 900000
-0.195
+0.199
 
 Array length is 1000000
-0.218
+0.223

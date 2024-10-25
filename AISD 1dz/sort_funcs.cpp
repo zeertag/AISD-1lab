@@ -174,7 +174,7 @@ int* Sorts::quick_sort(int* numbers, int size)
     delete[] r_arr;
 
     return result;
-}
+ }
 
 int* Sorts::quick_sort_back(int* numbers, int size)
 {
